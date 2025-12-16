@@ -1,0 +1,15 @@
+# Bonita generated files
+target/
+bin/
+tmp/
+.work/
+*.log
+
+# Bonita runtime / cache
+engine/
+database/
+tomcat/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
