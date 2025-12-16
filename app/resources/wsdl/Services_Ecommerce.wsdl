@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://ecommerce.com/services"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             targetNamespace="http://ecommerce.com/services">
+    
+    <!-- Types -->
+    <types>
+        <xsd:schema targetNamespace="http://ecommerce.com/services">
+            
+            <!-- Client -->
+            <xsd:complexType name="AuthentificationRequest">
+                <xsd:sequence>
+                    <xsd:element name="email" type="xsd:string"/>
+                    <xsd:element name="motDePasse" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="AuthentificationResponse">
+                <xsd:sequence>
+                    <xsd:element name="valide" type="xsd:boolean"/>
+                    <xsd:element name="message" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <!-- Stock -->
+            <xsd:complexType name="StockRequest">
+                <xsd:sequence>
+                    <xsd:element name="idProduit" type="xsd:int"/>
+                    <xsd:element name="quantite" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="StockResponse">
+                <xsd:sequence>
+                    <xsd:element name="disponible" type="xsd:boolean"/>
+                    <xsd:element name="quantiteDisponible" type="xsd:int"/>
+                    <xsd:element name="message" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <!-- Paiement -->
+            <xsd:complexType name="PaiementRequest">
+                <xsd:sequence>
+                    <xsd:element name="numeroCarte" type="xsd:string"/>
+                    <xsd:element name="code" type="xsd:string"/>
+                    <xsd:element name="montant" type="xsd:double"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="PaiementResponse">
+                <xsd:sequence>
+                    <xsd:element name="accepte" type="xsd:boolean"/>
+                    <xsd:element name="referenceTransaction" type="xsd:string"/>
+                    <xsd:element name="message" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <!-- Commande -->
+            <xsd:complexType name="CommandeRequest">
+                <xsd:sequence>
+                    <xsd:element name="idClient" type="xsd:int"/>
+                    <xsd:element name="items" type="xsd:string"/>
+                    <xsd:element name="montantTotal" type="xsd:double"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="CommandeResponse">
+                <xsd:sequence>
+                    <xsd:element name="idCommande" type="xsd:int"/>
+                    <xsd:element name="numeroCommande" type="xsd:string"/>
+                    <xsd:element name="message" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <!-- Livraison -->
+            <xsd:complexType name="LivraisonRequest">
+                <xsd:sequence>
+                    <xsd:element name="idCommande" type="xsd:int"/>
+                    <xsd:element name="adresseLivraison" type="xsd:string"/>
+                    <xsd:element name="dateLivraison" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="LivraisonResponse">
+                <xsd:sequence>
+                    <xsd:element name="programme" type="xsd:boolean"/>
+                    <xsd:element name="trackingNumber" type="xsd:string"/>
+                    <xsd:element name="message" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <!-- Email -->
+            <xsd:complexType name="EmailRequest">
+                <xsd:sequence>
+                    <xsd:element name="email" type="xsd:string"/>
+                    <xsd:element name="sujet" type="xsd:string"/>
+                    <xsd:element name="message" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="EmailResponse">
+                <xsd:sequence>
+                    <xsd:element name="envoye" type="xsd:boolean"/>
+                    <xsd:element name="message" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            
+        </xsd:schema>
+    </types>
+    
+    <!-- Messages Client Service -->
+    <message name="AuthentificationRequestMessage">
+        <part name="parameters" element="tns:AuthentificationRequest"/>
+    </message>
+    
+    <message name="AuthentificationResponseMessage">
+        <part name="parameters" element="tns:AuthentificationResponse"/>
+    </message>
+    
+    <!-- Messages Stock Service -->
+    <message name="StockRequestMessage">
+        <part name="parameters" element="tns:StockRequest"/>
+    </message>
+    
+    <message name="StockResponseMessage">
+        <part name="parameters" element="tns:StockResponse"/>
+    </message>
+    
+    <!-- Messages Paiement Service -->
+    <message name="PaiementRequestMessage">
+        <part name="parameters" element="tns:PaiementRequest"/>
+    </message>
+    
+    <message name="PaiementResponseMessage">
+        <part name="parameters" element="tns:PaiementResponse"/>
+    </message>
+    
+    <!-- Messages Commande Service -->
+    <message name="CommandeRequestMessage">
+        <part name="parameters" element="tns:CommandeRequest"/>
+    </message>
+    
+    <message name="CommandeResponseMessage">
+        <part name="parameters" element="tns:CommandeResponse"/>
+    </message>
+    
+    <!-- Messages Livraison Service -->
+    <message name="LivraisonRequestMessage">
+        <part name="parameters" element="tns:LivraisonRequest"/>
+    </message>
+    
+    <message name="LivraisonResponseMessage">
+        <part name="parameters" element="tns:LivraisonResponse"/>
+    </message>
+    
+    <!-- Messages Email Service -->
+    <message name="EmailRequestMessage">
+        <part name="parameters" element="tns:EmailRequest"/>
+    </message>
+    
+    <message name="EmailResponseMessage">
+        <part name="parameters" element="tns:EmailResponse"/>
+    </message>
+    
+    <!-- PortType: Client Service -->
+    <portType name="ClientServicePortType">
+        <operation name="VerifierClient">
+            <input message="tns:AuthentificationRequestMessage"/>
+            <output message="tns:AuthentificationResponseMessage"/>
+        </operation>
+    </portType>
+    
+    <!-- PortType: Stock Service -->
+    <portType name="StockServicePortType">
+        <operation name="VerifierStock">
+            <input message="tns:StockRequestMessage"/>
+            <output message="tns:StockResponseMessage"/>
+        </operation>
+    </portType>
+    
+    <!-- PortType: Paiement Service -->
+    <portType name="PaiementServicePortType">
+        <operation name="EffectuerPaiement">
+            <input message="tns:PaiementRequestMessage"/>
+            <output message="tns:PaiementResponseMessage"/>
+        </operation>
+    </portType>
+    
+    <!-- PortType: Commande Service -->
+    <portType name="CommandeServicePortType">
+        <operation name="CreerCommande">
+            <input message="tns:CommandeRequestMessage"/>
+            <output message="tns:CommandeResponseMessage"/>
+        </operation>
+    </portType>
+    
+    <!-- PortType: Livraison Service -->
+    <portType name="LivraisonServicePortType">
+        <operation name="ProgrammerLivraison">
+            <input message="tns:LivraisonRequestMessage"/>
+            <output message="tns:LivraisonResponseMessage"/>
+        </operation>
+    </portType>
+    
+    <!-- PortType: Email Service -->
+    <portType name="EmailServicePortType">
+        <operation name="EnvoyerEmail">
+            <input message="tns:EmailRequestMessage"/>
+            <output message="tns:EmailResponseMessage"/>
+        </operation>
+    </portType>
+    
+    <!-- Binding: Client Service -->
+    <binding name="ClientServiceBinding" type="tns:ClientServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="VerifierClient">
+            <soap:operation soapAction="http://ecommerce.com/services/VerifierClient"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    
+    <!-- Binding: Stock Service -->
+    <binding name="StockServiceBinding" type="tns:StockServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="VerifierStock">
+            <soap:operation soapAction="http://ecommerce.com/services/VerifierStock"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    
+    <!-- Binding: Paiement Service -->
+    <binding name="PaiementServiceBinding" type="tns:PaiementServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="EffectuerPaiement">
+            <soap:operation soapAction="http://ecommerce.com/services/EffectuerPaiement"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    
+    <!-- Binding: Commande Service -->
+    <binding name="CommandeServiceBinding" type="tns:CommandeServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="CreerCommande">
+            <soap:operation soapAction="http://ecommerce.com/services/CreerCommande"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    
+    <!-- Binding: Livraison Service -->
+    <binding name="LivraisonServiceBinding" type="tns:LivraisonServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="ProgrammerLivraison">
+            <soap:operation soapAction="http://ecommerce.com/services/ProgrammerLivraison"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    
+    <!-- Binding: Email Service -->
+    <binding name="EmailServiceBinding" type="tns:EmailServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="EnvoyerEmail">
+            <soap:operation soapAction="http://ecommerce.com/services/EnvoyerEmail"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    
+    <!-- Service: Client Service -->
+    <service name="ClientService">
+        <port name="ClientServicePort" binding="tns:ClientServiceBinding">
+            <soap:address location="http://localhost:8080/ClientService"/>
+        </port>
+    </service>
+    
+    <!-- Service: Stock Service -->
+    <service name="StockService">
+        <port name="StockServicePort" binding="tns:StockServiceBinding">
+            <soap:address location="http://localhost:8080/StockService"/>
+        </port>
+    </service>
+    
+    <!-- Service: Paiement Service -->
+    <service name="PaiementService">
+        <port name="PaiementServicePort" binding="tns:PaiementServiceBinding">
+            <soap:address location="http://localhost:8080/PaiementService"/>
+        </port>
+    </service>
+    
+    <!-- Service: Commande Service -->
+    <service name="CommandeService">
+        <port name="CommandeServicePort" binding="tns:CommandeServiceBinding">
+            <soap:address location="http://localhost:8080/CommandeService"/>
+        </port>
+    </service>
+    
+    <!-- Service: Livraison Service -->
+    <service name="LivraisonService">
+        <port name="LivraisonServicePort" binding="tns:LivraisonServiceBinding">
+            <soap:address location="http://localhost:8080/LivraisonService"/>
+        </port>
+    </service>
+    
+    <!-- Service: Email Service -->
+    <service name="EmailService">
+        <port name="EmailServicePort" binding="tns:EmailServiceBinding">
+            <soap:address location="http://localhost:8080/EmailService"/>
+        </port>
+    </service>
+    
+</definitions>
